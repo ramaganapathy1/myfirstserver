@@ -2,8 +2,8 @@ var express = require('express');
 var app =  express();
 var bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({ extended: true })
-app.use(express.json());       // to support JSON-encoded bodies
-app.use(express.urlencoded()); // to support URL-encoded bodies
+//app.use(express.json());       // to support JSON-encoded bodies
+//app.use(express.urlencoded()); // to support URL-encoded bodies
     app.get('/',function (req,res) {
         res.sendFile(__dirname+"/" + "index.html" );
         //res.send('hello world!');
