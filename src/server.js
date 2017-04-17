@@ -2,8 +2,10 @@ var express = require('express');
 var app =  express();
 var bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({ extended: true })
-//app.use(express.json());       // to support JSON-encoded bodies
-//app.use(express.urlencoded()); // to support URL-encoded bodies
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(bodyParser.json());
     app.get('/',function (req,res) {
         res.sendFile(__dirname+"/" + "index.html" );
         //res.send('hello world!');
@@ -12,8 +14,9 @@ var urlencodedParser = bodyParser.urlencoded({ extended: true })
     })
 
     app.post("/user",function (req,res) {
-        var fname = req.body.first_name,
+        var fname =req.body.first_name,
             lname = req.body.last_name;
+
         var ip = req.connection.remoteAddress;
         response = {
             status:200,
