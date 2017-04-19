@@ -31,6 +31,7 @@ app.use(bodyParser.json());
             var user = {name:{fname:fname,lname:lname}};
             db.collection('users').insert(user, function(err, records) {
                 if (err) throw err;
+                records=JSON.stringify(records);
                 console.log("Record added as "+records);
             });
         });
@@ -42,8 +43,9 @@ app.use(bodyParser.json());
                 last: lname
             }
         };
+        response=JSON.stringify(response)
         console.log("POST/201/Name :  %s %s / IP : %s / Json : %s ",fname,lname,ip,response);
-        res.end(JSON.stringify(response));
+        res.end(response);
     })
     app.delete("/userDelete",function (req,res) {
         var fname=req.body.first_name,
