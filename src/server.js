@@ -5,6 +5,11 @@ var urlencodedParser = bodyParser.urlencoded({ extended: true })
 app.use(bodyParser.urlencoded({
     extended: true
 }));
+const MongoClient = require('mongodb').MongoClient;
+MongoClient.connect('mongodb://127.0.0.1:27017/android', function(err, db) {
+    if (err) throw err;
+    console.log("Connected to Database");
+})
 app.use(bodyParser.json());
     app.get('/',function (req,res) {
         res.sendFile(__dirname+"/" + "index.html" );
@@ -15,7 +20,20 @@ app.use(bodyParser.json());
     app.post("/user",function (req,res) {
         var fname =req.body.first_name,
             lname = req.body.last_name;
-
+            /*db.collection('users').insert({name:{fname:fname,lname:lanme}}, function(err, result) {
+                db.collection('users').find({name: {fname:fname}}).toArray(function(err, docs) {
+                    console.log(docs[0])
+                })
+            })*/
+        MongoClient.connect('mongodb://127.0.0.1:27017/android', function(err, db) {
+            if (err) throw err;
+            console.log("Connected to Database");
+            var user = {name:{fname:fname,lname:lname}};
+            db.collection('users').insert(user, function(err, records) {
+                if (err) throw err;
+                console.log("Record added as "+records);
+            });
+        });
         var ip = req.connection.remoteAddress;
         response = {
             status:200,
@@ -27,9 +45,10 @@ app.use(bodyParser.json());
         console.log("POST/201/Name :  %s %s / IP : %s / Json : %s ",fname,lname,ip,response);
         res.end(JSON.stringify(response));
     })
-    app.delete("/signup",function (req,res) {
+    app.delete("/userDelete",function (req,res) {
         var fname=req.body.first_name,
             lname = req.body.last_name;
+
         response={
             status:203,
             data:{
