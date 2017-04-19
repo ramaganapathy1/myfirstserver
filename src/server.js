@@ -8,8 +8,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
     app.get('/',function (req,res) {
         res.sendFile(__dirname+"/" + "index.html" );
-        //res.send('hello world!');
-        var ip = req.connection.remoteAddress;
+          var ip = req.connection.remoteAddress;
         console.log("GET/200/index root / %s",ip);
     })
 
@@ -28,6 +27,16 @@ app.use(bodyParser.json());
         console.log("POST/201/Name :  %s %s / IP : %s / Json : %s ",fname,lname,ip,response);
         res.end(JSON.stringify(response));
     })
+    app.delete("/signup",function (req,res) {
+        var fname=req.body.first_name,
+            lname = req.body.last_name;
+        response={
+            status:203,
+            data:{
+                value:"deleted succesfully"
+            }
+        }
+    })
     app.use(function(req, res, next) {
         res.status(404);
         if (req.accepts('json')) {
@@ -41,6 +50,7 @@ app.use(bodyParser.json());
         res.type('txt').send('Not found');
 
     })
+
 var server = app.listen(8080,function () {
         var host = server.address().address
         var port = server.address().port
