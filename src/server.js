@@ -60,7 +60,7 @@ app.use(bodyParser.json());
     })
     app.use(function(req, res, next) {
         res.status(404);
-        if (req.accepts('json')) {
+        if (req.accepts()) {
             res.send({ error: 'Not found' });
             var ip = req.connection.remoteAddress;
             console.log("404/Page Not Found/%s/Ip :%s", req.data, ip);
